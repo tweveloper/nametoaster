@@ -2,6 +2,48 @@ import logo from "./logo.svg";
 import "./App.css";
 import { CalendarDaysIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
 
+const recommandName = async () => {
+  try {
+    const favorite = document.querySelector('input[name="favorite"]');
+    const age = document.querySelector('input[name="age"]');
+    const personality = document.querySelector('input[name="personality"]');
+
+    const params = {
+      messages: [
+        {
+          content: `내 취미는 ${favorite.value} 입니다.`,
+        },
+        {
+          content: `내 나이는 ${age.value} 입니다.`,
+        },
+        {
+          content: `내 성격은 ${personality.value} 입니다.`,
+        },
+        {
+          content: `내게 맞는 영어이름 추천해줘`,
+        },
+      ],
+    };
+
+    const url = `http://localhost:5077/toaster/name`;
+    // const url = `https://api.nametoaster.com/toaster/name`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+
+    const result = await response.json();
+
+    console.log("Success", result);
+  } catch (error) {
+    console.error("Error", error);
+  }
+};
+
 function App() {
   return (
     <div className="relative isolate overflow-hidden bg-gray-700 py-16 sm:py-24 lg:py-32">
@@ -17,7 +59,7 @@ function App() {
             <div className="mt-6 flex max-w-md gap-x-4">
               <input
                 name="favorite"
-                type="test"
+                type="text"
                 required
                 className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 placeholder="축구, 여행, 요리, 드라이브"
@@ -46,7 +88,8 @@ function App() {
                 placeholder="낭랑 18세"
               />
               <button
-                type="submit"
+                type="button"
+                onClick={recommandName}
                 className="flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
                 제출하기
