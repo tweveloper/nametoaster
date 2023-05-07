@@ -25,8 +25,7 @@ const recommandName = async () => {
       ],
     };
 
-    const url = `http://localhost:5077/toaster/name`;
-    // const url = `https://api.nametoaster.com/toaster/name`;
+    url = `https://api.nametoaster.com/toaster/name`;
 
     const response = await fetch(url, {
       method: "POST",
