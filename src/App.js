@@ -7,9 +7,13 @@ const recommandName = async () => {
     const favorite = document.querySelector('input[name="favorite"]');
     const age = document.querySelector('input[name="age"]');
     const personality = document.querySelector('input[name="personality"]');
+    const sex = document.querySelector('input[name="sex"]');
 
     const params = {
       messages: [
+        {
+          content: `저는 ${sex.value} 입니다.`,
+        },
         {
           content: `내 취미는 ${favorite.value} 입니다.`,
         },
@@ -36,6 +40,18 @@ const recommandName = async () => {
     });
 
     const result = await response.json();
+    let html = ``;
+
+    result.forEach((x) => {
+      html += `<div className="flex flex-col items-start">
+                    <dd className="mt-2 leading-7 text-gray-400">
+                      ${x.recommand}
+                    </dd>
+                  </div>`;
+    });
+
+    const contents = document.querySelector("#contents");
+    contents.innerHTML = html;
 
     console.log("Success", result);
   } catch (error) {
@@ -52,6 +68,18 @@ function App() {
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               나에게 맞는 영어 이름
             </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-300">
+              남자인가요? 여자인가요?
+            </p>
+            <div className="mt-6 flex max-w-md gap-x-4">
+              <input
+                name="sex"
+                type="text"
+                required
+                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                placeholder="남자, 여자"
+              />
+            </div>
             <p className="mt-4 text-lg leading-8 text-gray-300">
               내가 좋아하는 것은?
             </p>
@@ -95,21 +123,7 @@ function App() {
               </button>
             </div>
           </div>
-          <div className="max-w-xl">
-            <div className="flex flex-col items-start">
-              <dt className="mt-4 font-semibold text-white">Jordan</dt>
-              <dd className="mt-2 leading-7 text-gray-400">
-                Jordan is funny. funny is funny
-              </dd>
-            </div>
-            <div className="flex flex-col items-start">
-              <dt className="mt-4 font-semibold text-white">No spam</dt>
-              <dd className="mt-2 leading-7 text-gray-400">
-                Officia excepteur ullamco ut sint duis proident non adipisicing.
-                Voluptate incididunt anim.
-              </dd>
-            </div>
-          </div>
+          <div className="max-w-xl" id="contents"></div>
         </div>
       </div>
     </div>
